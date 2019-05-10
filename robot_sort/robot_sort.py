@@ -97,7 +97,68 @@ class SortingRobot:
         Sort the robot's list.
         """
         # Fill this out
-        pass
+        #We start with the robot's light on so that it moves into the while loop
+        self.set_light_on()
+        # print("I'm standing in position",self._position)
+        while self.light_is_on():
+            # once in the while loop we set his light to off
+            self.set_light_off()
+            # if he can move right, we move him right
+            while self.can_move_right():
+                #we tell him to pick up the item where he's standing
+                self.swap_item()
+                # print("I picked up",self._item)
+                #we move him right 
+                self.move_right()
+                # print("I moved to position",self._position)
+                # we compare the item he's holding with the one he's standing in front of
+                # if the item he's currently holding is less...
+                if self.compare_item() == -1:
+                    # print("My item",self._item,"is less than",self._list[self._position],"putting it back.")
+                    # we move him back to his previous position
+                    self.move_left()
+                    # and tell him to put down the item he's holding
+                    self.swap_item()
+                    # print("I set down my item, I have,",self._item)
+                    # we then instruct him to move right
+                    self.move_right()
+                    # print("I moved to position",self._position)
+                
+                # if the item he's holding is greater than the one he's standing in front of
+                if self.compare_item() == 1:
+                    # print("I'm holding",self._item,"it needs to be swapped with",self._list[self._position])
+                    # we tell him to swap the two items - he puts down the large one and picks up the smaller one
+                    self.swap_item()
+                    # we then tell him to move left...
+                    self.move_left()
+                    # print("I moved to position",self._position)
+                    # print("Putting down",self._item)
+                    # and he puts down the smaller one
+                    self.swap_item()
+                    # and then moves right
+                    self.move_right()
+                    # he turns his light on to indicate that a swap was made and he goes back
+                    # to the beginning of the loop
+                    self.set_light_on()
+
+                # if the item he's holding is equal to the item in front of him...
+                if self.compare_item() == 0:
+                    # we tell him to move left
+                    self.move_left()
+                    # we swap the items
+                    self.swap_item()
+                    # and then tell him to move right
+                    self.move_right()
+            
+
+            if self.light_is_on() == False:
+                return
+            else:
+                while self.can_move_left():
+                    self.move_left()
+
+        
+        
 
 
 if __name__ == "__main__":
@@ -110,3 +171,15 @@ if __name__ == "__main__":
 
     robot.sort()
     print(robot._list)
+
+
+'''
+The robot's light is going to be the end of the function that will then return the sorted array.
+I'm going to model my solution off of the bubble sort algorithm, with the robot moving
+incrementally to the right comparing the numbers and swapping as needed.
+It will sort highest to lowest moving right and then to the left. This will work, because
+it will compare and transfer the highest cards to the right so that once it reaches the farthest
+right and can't find any other numbers to sort everything will be correctly sorted.
+It will turn on it's light when it has made a swap and then prompt the end of the function
+by keeping it's light off and return the sorted list.
+'''
